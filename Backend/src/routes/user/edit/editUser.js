@@ -11,6 +11,6 @@ export const editUser = async (req, res) => {
 
         res.send(`User updated succesfully: ${userUpdated}`);
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 };

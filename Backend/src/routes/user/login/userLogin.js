@@ -4,22 +4,22 @@ export const loginUser = async (req, res) => {
     const {userName, password} = req.body
     
     if (!userName || !password){
-        res.status(400).send('Necessary data is missing')
+        res.status(400).json('Necessary data is missing')
     }
     else{
         try {
             const userSearched = await User.findOne({where: {userName: userName}})
             if (userSearched === null){
-                res.status(400).send('No user was founded')
+                res.status(400).json('No user was founded')
             }
             else if (userSearched.password !== password){
-                res.status(400).send('Incorrect password')
+                res.status(400).json('Incorrect password')
             }
             else{
                 res.send(userSearched)
             }
         } catch (error) {
-            res.status(400).send(error.message)
+            res.status(400).json(error.message)
         }
     }
 }
