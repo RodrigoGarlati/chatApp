@@ -20,18 +20,7 @@ export const User = sequelize.define('users',{
     image: {
         type: DataTypes.STRING,
         defaultValue: 'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'
-    },
-    chatId: {
-        type: DataTypes.INTEGER
     }
+},{
+    timestamps: false
 });
-
-User.hasMany(Chat, {
-    foreignKey: "users[]",
-    sourceKey: "id"
-})
-
-Chat.belongsTo(User, {
-    foreignKey: "chatId",
-    targetId: "id"
-})

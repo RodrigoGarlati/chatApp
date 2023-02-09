@@ -1,17 +1,26 @@
 import {User} from '../../../database/models/User.js'
+import createError from 'http-errors'
 
-export const createUser = async (req, res) => {
+export const createUser = async (req, res, next) => {
     const {userName, password, image} = req.body
 
     if (!userName || !password){
-        res.status(400).send('Necessary data is missing')
+        const error = createError(400, 'Necessary data is missing')
+        next(error)
     }
     else {
         try {
-            const user = await User.create({userName, password, image})
-            res.send(user)
+            let user
+            if (!image){
+                user = await User.create({userName, password})
+            }
+            else{
+                user = await User.create({userName, password, image})
+            }
+            res.json(user)
         } catch (error) {
-            res.status(400).send(error.message)
+            const sendedError = createError(400, error)
+            next(sendedError)
         }   
     }
 }

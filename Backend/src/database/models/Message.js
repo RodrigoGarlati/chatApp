@@ -11,13 +11,6 @@ export const Message = sequelize.define('messages', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    hour: {
-        type: DataTypes.DATEONLY,
-        allowNull: false
-    },
-    chatId:{
-        type: DataTypes.INTEGER
-    },
     transmitter: {
         type: DataTypes.INTEGER,
         allowNull: false

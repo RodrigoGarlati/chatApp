@@ -3,6 +3,7 @@ import {sequelize} from './database/database.js'
 import './database/models/User.js'
 import './database/models/Message.js'
 import './database/models/Chat.js'
+import './database/associations.js'
 
 const PORT = 4000
 
