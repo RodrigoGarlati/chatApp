@@ -1,59 +1,34 @@
-import React from "react"
-import { useState } from "react"
-import { apiUrl } from "@/utils/apiUrl"
+import React, { ChangeEvent, useState } from "react"
+import HomeLayout from "@/components/home/HomeLayout"
+import Register from "@/components/home/Register"
+import Login from "@/components/home/Login"
 
-export default function Hola(){
+export default function Home(){
+    const [login, setLogin] = useState(false)
+
+    const handleButton = () => {
+        login? setLogin(false) : setLogin(true)
+    }
     
-    const [input, setInput] = useState<any>({
-        userName: "",
-        password: "",
-        image: ""
-    })
-
-    const handleChange = (event) => {
-        setInput({
-            ...input,
-            [event.target.name]: event.target.value 
-        })
-    }
-
-    const handleRegister = async (event) => {
-        event.preventDefault();
-        try {
-            let registerStatus:any = await fetch(`${apiUrl}/user`, {
-                method: "POST",
-                body: JSON.stringify(input),
-                headers: {'Content-Type': 'application/json'}
-            })
-            registerStatus = await registerStatus.json()
-            console.log(registerStatus)
-        } catch (error:any) {
-            console.log(error);            
-        }
-        
-    }
-
     return (
         <div>
-            <form>
+            <HomeLayout/>
+            {login? 
+                <Login/> : 
+                <Register/>
+            }
+            <div>
+                {login? 
+                    <h3>If you don't have an account</h3> : 
+                    <h3>If you already have an account</h3>
+                }
                 <div>
-                    <label>User</label>
-                    <input name="userName" placeholder="Usuario.." value={input.user} onChange={e => handleChange(e)}/>
+                   {login? 
+                        <button onClick={() => handleButton()}>REGISTER HERE</button> : 
+                        <button onClick={() => handleButton()}>LOGIN HERE</button>
+                   }
                 </div>
-                <div>
-                    <label>Password</label>
-                    <input name="password" placeholder="Password.." value={input.password} onChange={e => handleChange(e)}/>
-                </div>
-                {/* <div>
-                    <label>Confirm password</label>
-                    <input name="confirmPassword" placeholder="Password.." value={input.confirmPassword} onChange={e => handleChange(e)}/>
-                </div> */}
-                <div>
-                    <label>User image (any url)</label>
-                    <input name="confirmPassword" placeholder="Image url.." value={input.image} onChange={e => handleChange(e)}/>
-                </div>
-                <button type="submit" onClick={e => handleRegister(e)}>Register</button>
-            </form>
+            </div>
         </div>
     )
 }
