@@ -13,12 +13,19 @@ export const AuthProvider = ({children}:ScriptProps) => {
     const login = (data:UserResponse) => {
         setUser(data)
     }
+    const setChats = (data:Array<Object>) => {
+        setUser({
+            ...user,
+            usersChatted: data
+        })
+    }
     const clearContext = () => {
         setUser({})
     } 
     const value = {
         user,
         login,
+        setChats,
         clearContext
     }
     return(

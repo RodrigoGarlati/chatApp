@@ -38,8 +38,8 @@ export default function ChatCreator(){
     }
 
     return(
-        <Fragment>
-            <button onClick={openModal}>+</button>
+        <div>
+            <button className="mt-4 btn btn-primary" onClick={openModal}>Create new chat</button>
             <Modal
                 isOpen= {modalIsOpen}
                 onRequestClose= {closeModal}
@@ -53,6 +53,6 @@ export default function ChatCreator(){
                 )): null}
             </Modal>
 
-        </Fragment>
+        </div>
     )
 }

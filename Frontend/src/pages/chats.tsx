@@ -18,8 +18,8 @@ export default function Chats(){
 
     return(
         <Fragment>
-            {user.loggedUser? <h1>{user.loggedUser.userName}</h1> : null}
-            <ChatCreator/>
+            {user.loggedUser? <h1 className="display-2">Logged as: {user.loggedUser.userName}</h1> : null}
+            <ChatCreator />
             <ChatsManager/>
         </Fragment>
     )

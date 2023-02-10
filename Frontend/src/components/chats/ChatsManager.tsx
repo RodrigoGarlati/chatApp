@@ -1,9 +1,9 @@
-import React, { useState, Fragment, ChangeEvent } from "react";
+import React, { useState, Fragment, ChangeEvent, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { UserResponse } from "@/types/apiResponses";
 import { apiUrl } from "@/utils/apiUrl";
 import ShowMessages from "../messages/ShowMessages";
 import MessageSender from "../messages/MessageSender";
+import { connectSocket } from "@/socket/socket";
 
 export default function ChatsManager(){
     const [selectedChatInfo, setSelectedChatInfo] = useState({
@@ -11,14 +11,33 @@ export default function ChatsManager(){
         receiver: '',
         chatId: ''
     })
-    const {user} = useAuth()
-    console.log(user)
+    const {user, setChats} = useAuth()
+    
+    useEffect(()=>{
+        const socketCb = () => {
+            getUserChats()
+        }
+
+        connectSocket.on('chat', socketCb)
+        
+        return () => {
+            connectSocket.off('chat', socketCb)
+        }
+    },[user])
+
+    async function getUserChats(){
+        let usersChatted:any = await fetch(`${apiUrl}/chat/getuserchats/${user.loggedUser.id}`)
+        usersChatted = await usersChatted.json()
+        setChats(usersChatted)
+    }
 
     async function hanldeDelete(id:Number){
         console.log(id)
         let delStatus: Response | Number = await fetch(`${apiUrl}/chat/deletechat`,{
             method: "DELETE",
-            body: JSON.stringify({chatId: id}),
+            body: JSON.stringify({
+                chatId: id
+            }),
             headers: {'Content-Type': 'application/json'}
         })
         delStatus = await delStatus.json()
@@ -31,33 +50,34 @@ export default function ChatsManager(){
             receiver: receiver,
             chatId: chatId
         })
-        console.log(selectedChatInfo)
     }
 
     return(
-        <div>
-            <div>
+        <div className="container-xxl row p-3">
+            <div className="col-4 mt-5 p-3">
                 {user.usersChatted && user.usersChatted.length? user.usersChatted.map((user:any) => {return (
-                    <div key={`${user.id}`}>
-                        <div onClick={() => hanldeSelectChat(user.id, user.userChats.chatId)}>
-                            <img src={user.image} width={50}/>
-                            <h3>
+                    <div key={`${user.id}`} className='d-flex justify-content-between mb-3 h-25 bg-secondary text-white'>
+                        <div onClick={() => hanldeSelectChat(user.id, user.userChats.chatId)} className='d-flex '>
+                            <img src={user.image} className='w-25'/>
+                            <h3 className="p-3">
                                 {user.userName}
                             </h3>
                         </div>
-                        <button onClick={() => hanldeDelete(user.userChats.chatId)}>{`Borrar chat con ${user.userName}`}</button>
+                        <button onClick={() => hanldeDelete(user.userChats.chatId)} className='btn btn-danger'>{`Delete chat`}</button>
                     </div>
                 )}) 
                 : 
                 <h1>No chats availables</h1>}
             </div>
-            <div>
+            <div className="col-8 p-3 border rounded h-25 d-inline-block overflow-auto">
                 {selectedChatInfo.selected? (
-                    <div>
-                        <ShowMessages
-                            chatId = {selectedChatInfo.chatId}
-                            receiver = {selectedChatInfo.receiver}
-                        />
+                    <div className="d-flex flex-column justify-content-between">
+                        <div>
+                            <ShowMessages
+                                chatId = {selectedChatInfo.chatId}
+                                receiver = {selectedChatInfo.receiver}
+                            />
+                        </div>
                         <MessageSender
                             chatId={selectedChatInfo.chatId}
                             receiver={selectedChatInfo.receiver}

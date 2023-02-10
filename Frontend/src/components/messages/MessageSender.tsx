@@ -11,9 +11,9 @@ export default function MessageSender(props: PropsToChat){
         setMessage(event.target.value)
     }
 
-    async function sendMessage(event:any){
-        event.preventDefault();
-        let messageStatus = await fetch(`${apiUrl}/message/sendmessage`, {
+    function sendMessage(event:any){
+        event.preventDefault()
+        fetch(`${apiUrl}/message/sendmessage`, {
             method: 'POST',
             body: JSON.stringify({
                 text: message,
@@ -23,13 +23,16 @@ export default function MessageSender(props: PropsToChat){
             }),
             headers: {'Content-Type': 'application/json'}
         })
-        messageStatus = await messageStatus.json()
+        
+        setMessage('')
     }
 
     return(
         <div>
-            <input placeholder="Type a message.." onChange={e => handleMessage(e)}/>
-            <button onClick={e => sendMessage(e)}>SEND</button>
+            <form className="row">
+                <input placeholder="Type a message.." onChange={e => handleMessage(e)} value={message} className='col-10 ms-4'/>
+                <button onClick={e => sendMessage(e)} className='col-1 btn btn-success ms-3'>SEND</button>
+            </form>
         </div>
     )
 }
