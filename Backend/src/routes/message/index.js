@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getChatMessages } from './getall/getChatMessages.js'
+import { getChatMessages } from './get/getChatMessages.js'
 import { sendMessage } from './send/sendMessage.js'
 
 const router = Router()
