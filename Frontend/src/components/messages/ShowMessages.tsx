@@ -9,7 +9,6 @@ export default function ShowMessages(props:PropsToChat){
     const [messages, setMessages] = useState<Message[]>([])
 
     useEffect(()=>{
-        console.log(messages)
         getMessages()
         const socketCb = () => {
             getMessages()

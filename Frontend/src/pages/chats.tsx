@@ -3,6 +3,7 @@ import { apiUrl } from "@/utils/apiUrl"
 import { useAuth } from "@/context/AuthContext"
 import ChatCreator from "@/components/chats/ChatCreator"
 import ChatsManager from "@/components/chats/ChatsManager"
+import { connectSocket } from "@/socket/socket"
 
 export default function Chats(){
     const {user, login, clearContext} = useAuth()
@@ -13,14 +14,18 @@ export default function Chats(){
             fetch(`${apiUrl}/user/getuser/${id}`)
             .then(response => response.json())
             .then(data => login(data))
+
+            connectSocket
         }
     },[])
 
     return(
-        <Fragment>
-            {user.loggedUser? <h1 className="display-2">Logged as: {user.loggedUser.userName}</h1> : null}
+        <div>
+            {user.loggedUser? <h1 className="display-2 text-warning">Logged as: {user.loggedUser.userName}</h1> : null}
             <ChatCreator />
-            <ChatsManager/>
-        </Fragment>
+            <div className="bg-dark bg-opacity-50 rounded p-2 mt-2">
+                <ChatsManager/>
+            </div>
+        </div>
     )
 }

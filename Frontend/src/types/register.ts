@@ -1,7 +1,7 @@
 export interface RegisterInfo {
     userName: string
     password: string
-    image: string | undefined
+    image: string 
 }
 
 export interface ConfirmPassword {

@@ -1,9 +1,24 @@
-import { Chat } from "./chat";
+export type RegisterResponse = string
 
-export interface UserResponse{
+export type LoginResponse = Number
+
+export interface UserInfo{
     id: Number,
-    userName: string,
-    password: string,
     image: string,
-    user_chats: Array<Chat>,
+    userName: string
 }
+
+export type UsersChatted = Array<UserInfo>
+
+export interface LoggedUser extends UserInfo{
+    loggedUser: UserInfo,
+    usersChatted: UserInfo[]
+}
+
+export type CreateChatResponse = string
+
+export interface ChatsResponse{
+    usersChatted: UsersChatted
+}
+
+export type DeleteChatResponse = string

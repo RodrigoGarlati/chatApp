@@ -1,4 +1,3 @@
-export interface LoginInfo{
-    userName: string,
-    password: string
-}
+import { RegisterInfo } from "./register"
+
+export type LoginInfo = Omit<RegisterInfo, 'image'>

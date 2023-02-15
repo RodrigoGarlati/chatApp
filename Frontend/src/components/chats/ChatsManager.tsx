@@ -4,9 +4,11 @@ import { apiUrl } from "@/utils/apiUrl";
 import ShowMessages from "../messages/ShowMessages";
 import MessageSender from "../messages/MessageSender";
 import { connectSocket } from "@/socket/socket";
+import { SelectChatState } from "@/types/chat";
+import { DeleteChatResponse, UsersChatted } from "@/types/apiResponses";
 
 export default function ChatsManager(){
-    const [selectedChatInfo, setSelectedChatInfo] = useState({
+    const [selectedChatInfo, setSelectedChatInfo] = useState<SelectChatState>({
         selected: false,
         receiver: '',
         chatId: ''
@@ -26,14 +28,13 @@ export default function ChatsManager(){
     },[user])
 
     async function getUserChats(){
-        let usersChatted:any = await fetch(`${apiUrl}/chat/getuserchats/${user.loggedUser.id}`)
+        let usersChatted: UsersChatted | any = await fetch(`${apiUrl}/chat/getuserchats/${user.loggedUser.id}`)
         usersChatted = await usersChatted.json()
         setChats(usersChatted)
     }
 
     async function hanldeDelete(id:Number){
-        console.log(id)
-        let delStatus: Response | Number = await fetch(`${apiUrl}/chat/deletechat`,{
+        let delStatus : DeleteChatResponse | any = await fetch(`${apiUrl}/chat/deletechat`,{
             method: "DELETE",
             body: JSON.stringify({
                 chatId: id
@@ -54,34 +55,38 @@ export default function ChatsManager(){
 
     return(
         <div className="container-xxl row p-3">
-            <div className="col-4 mt-5 p-3">
+            <div className="col-4 mt-5 p-3 overflow-y">
                 {user.usersChatted && user.usersChatted.length? user.usersChatted.map((user:any) => {return (
-                    <div key={`${user.id}`} className='d-flex justify-content-between mb-3 h-25 bg-secondary text-white'>
+                    <div key={`${user.id}`} className='d-flex justify-content-between mb-3 bg-danger bg-opacity-50 mb-2 p-2 rounded-pill cursor-pointer'>
                         <div onClick={() => hanldeSelectChat(user.id, user.userChats.chatId)} className='d-flex '>
-                            <img src={user.image} className='w-25'/>
-                            <h3 className="p-3">
+                            <img src={user.image} className='w-25 rounded-circle'/>
+                            <h3 className="p-3 text-dark">
                                 {user.userName}
                             </h3>
                         </div>
-                        <button onClick={() => hanldeDelete(user.userChats.chatId)} className='btn btn-danger'>{`Delete chat`}</button>
+                        <button onClick={() => hanldeDelete(user.userChats.chatId)} className='btn btn-danger rounded-pill'>
+                            Delete
+                        </button>
                     </div>
                 )}) 
                 : 
                 <h1>No chats availables</h1>}
             </div>
-            <div className="col-8 p-3 border rounded h-25 d-inline-block overflow-auto">
+            <div className="col-8 p-3 border rounded h-100">
                 {selectedChatInfo.selected? (
                     <div className="d-flex flex-column justify-content-between">
-                        <div>
+                        <div className="border h-100">
                             <ShowMessages
                                 chatId = {selectedChatInfo.chatId}
                                 receiver = {selectedChatInfo.receiver}
                             />
                         </div>
-                        <MessageSender
-                            chatId={selectedChatInfo.chatId}
-                            receiver={selectedChatInfo.receiver}
-                        />
+                        <div>
+                            <MessageSender
+                                chatId={selectedChatInfo.chatId}
+                                receiver={selectedChatInfo.receiver}
+                            />
+                        </div>
                     </div>
                 ):
                     <h1>Selecciona un chat</h1>

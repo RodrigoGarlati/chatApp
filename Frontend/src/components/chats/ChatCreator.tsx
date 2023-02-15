@@ -1,11 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { apiUrl } from "@/utils/apiUrl";
 import Modal from 'react-modal';
-import { UserResponse } from "@/types/apiResponses";
 import { useAuth } from "@/context/AuthContext";
+import { CreateChatResponse, UserInfo } from "../../types/apiResponses";
 
 export default function ChatCreator(){
-    const [users, setUsers] = useState<UserResponse[]>([])
+    const [users, setUsers] = useState<UserInfo[]>([])
     const [modalIsOpen, setIsOpen] = useState<boolean>(false)
 
     const {user} = useAuth()
@@ -25,7 +25,7 @@ export default function ChatCreator(){
     }
 
     async function createChat(id:Number) {
-        let chatStatus = await fetch(`${apiUrl}/chat/createchat`, {
+        let chatStatus : CreateChatResponse | any = await fetch(`${apiUrl}/chat/createchat`, {
             method: 'POST',
             body : JSON.stringify({
                 loggedUserId: user.loggedUser.id,
@@ -39,7 +39,7 @@ export default function ChatCreator(){
 
     return(
         <div>
-            <button className="mt-4 btn btn-primary" onClick={openModal}>Create new chat</button>
+            <button className="mt-4 btn btn-warning rounded-pill" onClick={openModal}>Create new chat +</button>
             <Modal
                 isOpen= {modalIsOpen}
                 onRequestClose= {closeModal}
@@ -52,7 +52,6 @@ export default function ChatCreator(){
                     </div>
                 )): null}
             </Modal>
-
         </div>
     )
 }

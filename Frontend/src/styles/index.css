@@ -1,0 +1,13 @@
+body{
+    background-image: url('https://wallpaperboat.com/wp-content/uploads/2021/04/12/74416/communication-02.jpg');
+    overflow-y: hidden;
+    padding: 2%;
+}
+
+.overflow-y{
+    overflow-y: scroll;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}

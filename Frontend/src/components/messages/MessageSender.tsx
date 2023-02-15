@@ -1,17 +1,17 @@
 import { useAuth } from "@/context/AuthContext";
 import { PropsToChat } from "@/types/chat";
 import { apiUrl } from "@/utils/apiUrl";
-import React, {useState, ChangeEvent} from "react"
+import React, {useState, ChangeEvent, MouseEvent} from "react"
 
 export default function MessageSender(props: PropsToChat){
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState<string>('')
     const { user } = useAuth()
 
     function handleMessage(event: ChangeEvent<HTMLInputElement>){
         setMessage(event.target.value)
     }
 
-    function sendMessage(event:any){
+    function sendMessage(event:MouseEvent){
         event.preventDefault()
         fetch(`${apiUrl}/message/sendmessage`, {
             method: 'POST',

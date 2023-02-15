@@ -1,10 +1,10 @@
 import React, {useState, ChangeEvent, MouseEvent} from "react"
 import { apiUrl } from "@/utils/apiUrl"
 import { useRouter } from "next/router"
-import { UserResponse } from "@/types/apiResponses" 
+import { LoginInfo } from "@/types/login"
 
 export default function Login(){
-    const [input, setInput] = useState({
+    const [input, setInput] = useState<LoginInfo>({
         userName: '',
         password: ''
     })
@@ -18,18 +18,19 @@ export default function Login(){
         })
     }
 
-    const hanldeLogin = async (event: MouseEvent) => {
+    const handleLogin = async (event: MouseEvent) => {
         event.preventDefault();
         const {userName, password} = input
         if (userName && password){
             try {
-                let loginStatus : UserResponse | any = await fetch(`${apiUrl}/user/login`, {
+                let loginStatus : LoginInfo | any = await fetch(`${apiUrl}/user/login`, {
                     method: 'POST',
                     body: JSON.stringify(input),
                     headers: {'Content-Type': 'application/json'}
                 })
                 
                 loginStatus = await loginStatus.json()
+
                 if (loginStatus.hasOwnProperty('error')){
                     alert(loginStatus.error.message)
                 }
@@ -47,25 +48,41 @@ export default function Login(){
     }
 
     return(
-        <form>
-            <div>
-                <label>User</label>
-                <input 
-                    placeholder="User..." 
+        <form className="p-2">
+            <div className="bg-primary bg-opacity-75 mb-2 p-2 rounded">
+                <label className="lead">
+                    <strong>User</strong>
+                </label>
+                <input
+                    className="form-control" 
                     name="userName" 
+                    placeholder="User..." 
                     value={input.userName} 
-                    onChange={(event) => handleInputChange(event)} >
-                </input>
+                    onChange={e => handleInputChange(e)}
+                />
             </div>
-            <div>
-                <label>Password</label>
-                <input 
+            <div className="bg-primary bg-opacity-75 mb-2 p-2 rounded">
+                <label className="lead">
+                    <strong>Password</strong>
+                </label>
+                <input
+                    className="form-control" 
+                    type='password' 
+                    name="password" 
                     placeholder="Password..." 
-                    type='password' name="password" 
-                    value={input.password} onChange={(event) => handleInputChange(event)} >
-                </input>
+                    value={input.password} 
+                    onChange={e => handleInputChange(e)}
+                />
             </div>
-            <button type="submit" onClick={(event) => hanldeLogin(event)}>Login</button>
+            <div className="d-flex justify-content-center">
+                <button 
+                    type="submit" 
+                    onClick={e => handleLogin(e)}
+                    className="btn btn-warning"
+                    >
+                        Login
+                </button>
+            </div>
         </form>
     )
 }

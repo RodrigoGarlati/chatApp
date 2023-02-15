@@ -1,5 +1,7 @@
-export interface Chat{
-    id: Number
+export interface SelectChatState{
+    selected: boolean,
+    receiver: string,
+    chatId: string
 }
 
 export interface PropsToChat{
