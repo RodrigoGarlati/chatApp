@@ -4,7 +4,9 @@ import createError from 'http-errors'
 
 export const getAllUsers = async (req, res, next) => {
     try {
-        const allUsers = await User.findAll()
+        const allUsers = await User.findAll({
+            attributes: ['id', 'userName', 'image']
+        })
         if (!allUsers.length){
             next(noUserFoundError)
         }

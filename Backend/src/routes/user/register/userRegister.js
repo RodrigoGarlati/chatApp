@@ -17,7 +17,7 @@ export const createUser = async (req, res, next) => {
             else{
                 user = await User.create({userName, password, image})
             }
-            res.json(user)
+            res.json('User created successfully')
         } catch (error) {
             const sendedError = createError(400, error)
             next(sendedError)

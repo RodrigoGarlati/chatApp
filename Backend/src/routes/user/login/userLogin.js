@@ -20,7 +20,7 @@ export const loginUser = async (req, res, next) => {
                 next(error)
             }
             else{
-                res.send(userSearched)
+                res.json({id : userSearched.id})
             }
         } catch (error) {
             const sendError = createError(400, error.message)
@@ -38,6 +38,7 @@ export const getUserData = async (req, res, next) => {
     else{
         try {
             const loggedUser = await User.findByPk(id, {
+                attributes: ['id', 'userName', 'image'],
                 include: {
                     model: Chat,
                     attributes: ['id']

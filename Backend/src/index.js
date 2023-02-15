@@ -14,7 +14,7 @@ export const io = new Server(server)
 
 const main = async function (){
     try {
-        await sequelize.sync({force: true})
+        await sequelize.sync({force: false})
         server.listen(PORT, ()=>{
             console.log(`Server listening on port ${PORT} :)`)
         })
