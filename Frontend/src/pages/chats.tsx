@@ -14,16 +14,14 @@ export default function Chats(){
             fetch(`${apiUrl}/user/getuser/${id}`)
             .then(response => response.json())
             .then(data => login(data))
-
-            connectSocket
         }
     },[])
 
     return(
         <div>
-            {user.loggedUser? <h1 className="display-2 text-warning">Logged as: {user.loggedUser.userName}</h1> : null}
+            {user.loggedUser? <h1 className="display-2 text-warning">Logged as  {user.loggedUser.userName}</h1> : null}
             <ChatCreator />
-            <div className="bg-dark bg-opacity-50 rounded p-2 mt-2">
+            <div className="bg-dark bg-opacity-50 rounded p-2 mt-2 chat-container">
                 <ChatsManager/>
             </div>
         </div>

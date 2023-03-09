@@ -7,6 +7,7 @@ import { CreateChatResponse, UserInfo } from "../../types/apiResponses";
 export default function ChatCreator(){
     const [users, setUsers] = useState<UserInfo[]>([])
     const [modalIsOpen, setIsOpen] = useState<boolean>(false)
+    console.log(users)
 
     const {user} = useAuth()
 
@@ -41,16 +42,30 @@ export default function ChatCreator(){
         <div>
             <button className="mt-4 btn btn-warning rounded-pill" onClick={openModal}>Create new chat +</button>
             <Modal
+                style={{
+                    content: {
+                        width: '50%',
+                        height: '80%',
+                        margin: 'auto',
+                        background: '#4682B4',
+                        outline: 'solid black'
+                    }
+                }}
                 isOpen= {modalIsOpen}
                 onRequestClose= {closeModal}
             >
-                {users && users? users.map(user => (
-                    <div key={`${user.id}`}>
-                        <img src={user.image} alt='User image' />
-                        <h1>{user.userName}</h1>
-                        <button onClick={(e) => createChat(user.id)}>CREATE CHAT</button>
-                    </div>
-                )): null}
+                <h1 className="text-center display-4">SELECT A USER TO CHAT WITH</h1>
+                <div className="mt-5">
+                    {users && users? users.map(user => (
+                        <div key={`${user.id}`} className='col-10 d-flex justify-content-between mx-auto mb-3 bg-light bg-opacity-50 p-2 rounded-pill'>
+                            <div  className='d-flex '>
+                                <img src={user.image} alt='User image' className='w-25 rounded-circle'/>
+                                <h1 className="p-3 text-dark align-self-center">{user.userName}</h1>
+                            </div>
+                            <button onClick={(e) => createChat(user.id)} className='p-4 w-25 btn btn-warning rounded-circle border border-dark'>CREATE</button>
+                        </div>
+                    )): null}
+                </div>
             </Modal>
         </div>
     )

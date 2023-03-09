@@ -1,6 +1,6 @@
 body{
     background-image: url('https://wallpaperboat.com/wp-content/uploads/2021/04/12/74416/communication-02.jpg');
-    overflow-y: hidden;
+    
     padding: 2%;
 }
 
@@ -10,4 +10,12 @@ body{
 
 .cursor-pointer{
     cursor: pointer;
+}
+
+.chat-container{
+    height: 70vh
+}
+
+.messages-box{
+    height: 55vh;
 }

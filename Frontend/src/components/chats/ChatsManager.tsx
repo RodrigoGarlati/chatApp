@@ -6,6 +6,7 @@ import MessageSender from "../messages/MessageSender";
 import { connectSocket } from "@/socket/socket";
 import { SelectChatState } from "@/types/chat";
 import { DeleteChatResponse, UsersChatted } from "@/types/apiResponses";
+import Chats from "@/pages/chats";
 
 export default function ChatsManager(){
     const [selectedChatInfo, setSelectedChatInfo] = useState<SelectChatState>({
@@ -30,6 +31,7 @@ export default function ChatsManager(){
     async function getUserChats(){
         let usersChatted: UsersChatted | any = await fetch(`${apiUrl}/chat/getuserchats/${user.loggedUser.id}`)
         usersChatted = await usersChatted.json()
+        console.log('entre a la get user y el estado es', user)
         setChats(usersChatted)
     }
 
@@ -54,10 +56,12 @@ export default function ChatsManager(){
     }
 
     return(
-        <div className="container-xxl row p-3">
-            <div className="col-4 mt-5 p-3 overflow-y">
+        <div className="row p-3">
+            <div className="col-4 p-3 overflow-auto">
                 {user.usersChatted && user.usersChatted.length? user.usersChatted.map((user:any) => {return (
-                    <div key={`${user.id}`} className='d-flex justify-content-between mb-3 bg-danger bg-opacity-50 mb-2 p-2 rounded-pill cursor-pointer'>
+                    <div key={`${user.id}`} className={selectedChatInfo.chatId == user.userChats.chatId? 
+                        'd-flex justify-content-between mb-3 bg-light bg-opacity-25 mb-2 p-2 rounded-pill cursor-pointer border': 
+                        'd-flex justify-content-between mb-3 bg-light bg-opacity-75 mb-2 p-2 rounded-pill cursor-pointer'}>
                         <div onClick={() => hanldeSelectChat(user.id, user.userChats.chatId)} className='d-flex '>
                             <img src={user.image} className='w-25 rounded-circle'/>
                             <h3 className="p-3 text-dark">
@@ -72,16 +76,16 @@ export default function ChatsManager(){
                 : 
                 <h1>No chats availables</h1>}
             </div>
-            <div className="col-8 p-3 border rounded h-100">
+            <div className="col-8 p-3 rounded">
                 {selectedChatInfo.selected? (
-                    <div className="d-flex flex-column justify-content-between">
-                        <div className="border h-100">
+                    <div className="bg-dark border border-warning">
+                        <div className="messages-box">
                             <ShowMessages
                                 chatId = {selectedChatInfo.chatId}
                                 receiver = {selectedChatInfo.receiver}
                             />
                         </div>
-                        <div>
+                        <div className="align-baseline">
                             <MessageSender
                                 chatId={selectedChatInfo.chatId}
                                 receiver={selectedChatInfo.receiver}

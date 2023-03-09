@@ -29,9 +29,9 @@ export default function MessageSender(props: PropsToChat){
 
     return(
         <div>
-            <form className="row">
-                <input placeholder="Type a message.." onChange={e => handleMessage(e)} value={message} className='col-10 ms-4'/>
-                <button onClick={e => sendMessage(e)} className='col-1 btn btn-success ms-3'>SEND</button>
+            <form className="d-flex">
+                <input placeholder="Type a message.." onChange={e => handleMessage(e)} value={message} className='col-11 bg-secondary bg-opacity-75'/>
+                <button onClick={e => sendMessage(e)} className='btn btn-warning col-1 rounded-0'>SEND</button>
             </form>
         </div>
     )
