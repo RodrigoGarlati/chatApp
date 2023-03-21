@@ -9,6 +9,7 @@ export default function Chats(){
     const {user, login, clearContext} = useAuth()
 
     useEffect(()=>{
+        connectSocket
         const id: string | null = localStorage.getItem('id')
         if (!Object.keys(user).length){
             fetch(`${apiUrl}/user/getuser/${id}`)

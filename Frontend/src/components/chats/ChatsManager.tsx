@@ -60,8 +60,8 @@ export default function ChatsManager(){
             <div className="col-4 p-3 overflow-auto">
                 {user.usersChatted && user.usersChatted.length? user.usersChatted.map((user:any) => {return (
                     <div key={`${user.id}`} className={selectedChatInfo.chatId == user.userChats.chatId? 
-                        'd-flex justify-content-between mb-3 bg-light bg-opacity-25 mb-2 p-2 rounded-pill cursor-pointer border': 
-                        'd-flex justify-content-between mb-3 bg-light bg-opacity-75 mb-2 p-2 rounded-pill cursor-pointer'}>
+                            'd-flex justify-content-between mb-3 bg-light bg-opacity-25 mb-2 p-2 rounded-pill cursor-pointer border': 
+                            'd-flex justify-content-between mb-3 bg-light bg-opacity-75 mb-2 p-2 rounded-pill cursor-pointer'}>
                         <div onClick={() => hanldeSelectChat(user.id, user.userChats.chatId)} className='d-flex '>
                             <img src={user.image} className='w-25 rounded-circle'/>
                             <h3 className="p-3 text-dark">
