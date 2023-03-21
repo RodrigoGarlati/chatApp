@@ -11,7 +11,10 @@ export const getChatMessages = async (req, res, next)=>{
     else{
         try {
             const messagesData = await Message.findAll({
-                where: {chatId: chatId}
+                where: {chatId: chatId},
+                order: [
+                    ['id', 'ASC']
+                ]
             })
             res.json(messagesData)
         } catch (error) {
