@@ -3,13 +3,11 @@ import { apiUrl } from "@/utils/apiUrl"
 import { useAuth } from "@/context/AuthContext"
 import ChatCreator from "@/components/chats/ChatCreator"
 import ChatsManager from "@/components/chats/ChatsManager"
-import { connectSocket } from "@/socket/socket"
 
 export default function Chats(){
     const {user, login, clearContext} = useAuth()
 
     useEffect(()=>{
-        connectSocket
         const id: string | null = localStorage.getItem('id')
         if (!Object.keys(user).length){
             fetch(`${apiUrl}/user/getuser/${id}`)
