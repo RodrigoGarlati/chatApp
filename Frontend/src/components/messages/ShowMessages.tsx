@@ -18,7 +18,6 @@ export default function ShowMessages(props:PropsToChat){
 
         connectSocket.on('message', socketCb)
 
-        position.current.scrollTop = '9999'
         return () => {
             connectSocket.off('message', socketCb)
         
