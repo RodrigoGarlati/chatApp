@@ -1,4 +1,4 @@
-import React, { useState, Fragment, ChangeEvent, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { apiUrl } from "@/utils/apiUrl";
 import ShowMessages from "../messages/ShowMessages";
@@ -6,7 +6,6 @@ import MessageSender from "../messages/MessageSender";
 import { connectSocket } from "@/socket/socket";
 import { SelectChatState } from "@/types/chat";
 import { DeleteChatResponse, UsersChatted } from "@/types/apiResponses";
-import Chats from "@/pages/chats";
 
 export default function ChatsManager(){
     const [selectedChatInfo, setSelectedChatInfo] = useState<SelectChatState>({
@@ -14,9 +13,12 @@ export default function ChatsManager(){
         receiver: '',
         chatId: ''
     })
+    const [chats, setChatss] = useState([])
     const {user, setChats} = useAuth()
     
     useEffect(()=>{
+        setChatss(user.usersChatted)
+
         const socketCb = () => {
             getUserChats()
         }
@@ -31,8 +33,8 @@ export default function ChatsManager(){
     async function getUserChats(){
         let usersChatted: UsersChatted | any = await fetch(`${apiUrl}/chat/getuserchats/${user.loggedUser.id}`)
         usersChatted = await usersChatted.json()
-        console.log('entre a la get user y el estado es', user)
         setChats(usersChatted)
+        console.log('entre a la get user y el estado es', user)
     }
 
     async function hanldeDelete(id:Number){
