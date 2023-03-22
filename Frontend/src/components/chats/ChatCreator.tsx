@@ -7,7 +7,6 @@ import { CreateChatResponse, UserInfo } from "../../types/apiResponses";
 export default function ChatCreator(){
     const [users, setUsers] = useState<UserInfo[]>([])
     const [modalIsOpen, setIsOpen] = useState<boolean>(false)
-    console.log(users)
 
     const {user} = useAuth()
 
