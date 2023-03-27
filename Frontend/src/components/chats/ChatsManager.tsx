@@ -13,12 +13,10 @@ export default function ChatsManager(){
         receiver: '',
         chatId: ''
     })
-    const [chats, setChatss] = useState([])
+    
     const {user, setChats} = useAuth()
     
     useEffect(()=>{
-        setChatss(user.usersChatted)
-
         const socketCb = () => {
             getUserChats()
         }
@@ -28,7 +26,7 @@ export default function ChatsManager(){
         return () => {
             connectSocket.off('chat', socketCb)
         }
-    },[user])
+    },[user.usersChatted])
 
     async function getUserChats(){
         let usersChatted: UsersChatted | any = await fetch(`${apiUrl}/chat/getuserchats/${user.loggedUser.id}`)
@@ -58,8 +56,8 @@ export default function ChatsManager(){
     }
 
     return(
-        <div className="row p-3">
-            <div className="col-4 p-3 overflow-auto">
+        <div className="row p-3 h-100">
+            <div className="col-4 p-3 h-100 overflow-auto">
                 {user.usersChatted && user.usersChatted.length? user.usersChatted.map((user:any) => {return (
                     <div key={`${user.id}`} className={selectedChatInfo.chatId == user.userChats.chatId? 
                             'd-flex justify-content-between mb-3 bg-light bg-opacity-25 mb-2 p-2 rounded-pill cursor-pointer border': 
@@ -76,7 +74,7 @@ export default function ChatsManager(){
                     </div>
                 )}) 
                 : 
-                <h1>No chats availables</h1>}
+                <h1 className="display-6 text-center text-light">No chats availables</h1>}
             </div>
             <div className="col-8 p-3 rounded">
                 {selectedChatInfo.selected? (
@@ -95,7 +93,7 @@ export default function ChatsManager(){
                         </div>
                     </div>
                 ):
-                    <h1>Selecciona un chat</h1>
+                    <h1 className="display-3 text-center text-light">No chat selected</h1>
                 }
             </div>
         </div>
