@@ -2,18 +2,24 @@ import React, { Fragment, useEffect, useState } from "react";
 import { apiUrl } from "@/utils/apiUrl";
 import Modal from 'react-modal';
 import { useAuth } from "@/context/AuthContext";
-import { CreateChatResponse, UserInfo } from "../../types/apiResponses";
+import { CreateChatResponse, UserInfo, UsersChatted } from "../../types/apiResponses";
 
 export default function ChatCreator(){
     const [users, setUsers] = useState<UserInfo[]>([])
     const [modalIsOpen, setIsOpen] = useState<boolean>(false)
 
-    const {user} = useAuth()
+    const {user, setChats} = useAuth()
+    console.log(user)
 
     useEffect(()=>{
         fetch(`${apiUrl}/chat/getallusers`)
         .then(res => res.json())
-        .then(usersData => setUsers(usersData))
+        .then(usersData => setUsers(usersData.filter((element:UserInfo)=>{
+                        return element.id !== user.loggedUser.id
+                    }
+                )
+            )
+        )
     },[])
     
     function openModal() {
@@ -25,16 +31,29 @@ export default function ChatCreator(){
     }
 
     async function createChat(id:Number) {
-        let chatStatus : CreateChatResponse | any = await fetch(`${apiUrl}/chat/createchat`, {
-            method: 'POST',
-            body : JSON.stringify({
-                loggedUserId: user.loggedUser.id,
-                otherUserId: id
-            }),
-            headers: {'Content-Type': 'application/json'}
-        })
-        chatStatus = await chatStatus.json()
-        console.log(chatStatus)
+        if (user.usersChatted.some((user:UserInfo) => user.id == id)){
+            alert('The chat already exist')
+        }
+        else{
+            let chatStatus : CreateChatResponse | any = await fetch(`${apiUrl}/chat/createchat`, {
+                method: 'POST',
+                body : JSON.stringify({
+                    loggedUserId: user.loggedUser.id,
+                    otherUserId: id
+                }),
+                headers: {'Content-Type': 'application/json'}
+            })
+            chatStatus = await chatStatus.json()
+            getUserChats()
+            setIsOpen(false)
+        }
+    }
+
+    async function getUserChats(){
+        let usersChatted : UsersChatted | any = await fetch(`${apiUrl}/chat/getuserchats/${user.loggedUser.id}`)
+        usersChatted = await usersChatted.json()
+        setChats(usersChatted)
+        
     }
 
     return(
