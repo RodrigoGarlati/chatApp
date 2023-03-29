@@ -22,7 +22,7 @@ export default function MessageSender(props: PropsToChat){
                 chatId: props.chatId
             }),
             headers: {'Content-Type': 'application/json'}
-        })
+        }).then(res=>console.log(res))
         
         setMessage('')
     }
