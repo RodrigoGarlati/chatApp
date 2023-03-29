@@ -8,7 +8,7 @@ export const Message = sequelize.define('messages', {
         autoIncrement: true
     },
     text: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     transmitter: {
