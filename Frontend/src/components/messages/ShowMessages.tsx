@@ -18,9 +18,10 @@ export default function ShowMessages(props:PropsToChat){
 
         connectSocket.on('message', socketCb)
 
+        console.log(messages)
+
         return () => {
             connectSocket.off('message', socketCb)
-        
         }
     },[props])
 
@@ -37,9 +38,9 @@ export default function ShowMessages(props:PropsToChat){
     return(
         <div className="d-flex flex-column bg-dark p-2 h-100 overflow-auto" ref={position}>
             {messages.length? messages.map(message => (
-                <div className={message.transmitter == props.receiver? 'align-self-start bg-primary rounded ps-2 pe-2 mt-1' : 
-                                                                        'align-self-end bg-light rounded ps-2 pe-2 mt-1'}>
-                    <p>{message.text}</p>
+                <div className={message.transmitter == props.receiver? 'align-self-start bg-primary ps-2 pe-2 mt-1 max-w msg-received-border' : 
+                                                                        'align-self-end bg-light ps-2 pe-2 mt-1 max-w msg-sent-border'}>
+                    <p className="mb-1 p-1">{message.text}</p>
                 </div>
             )) : null}
         </div>
