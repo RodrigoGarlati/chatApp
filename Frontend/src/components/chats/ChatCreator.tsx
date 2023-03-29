@@ -3,6 +3,7 @@ import { apiUrl } from "@/utils/apiUrl";
 import Modal from 'react-modal';
 import { useAuth } from "@/context/AuthContext";
 import { CreateChatResponse, UserInfo, UsersChatted } from "../../types/apiResponses";
+import { getUserChats } from "@/utils/getChats";
 
 export default function ChatCreator(){
     const [users, setUsers] = useState<UserInfo[]>([])
@@ -44,21 +45,15 @@ export default function ChatCreator(){
                 headers: {'Content-Type': 'application/json'}
             })
             chatStatus = await chatStatus.json()
-            getUserChats()
+            let chats = await getUserChats(user.loggedUser.id) 
+            setChats(chats)
             setIsOpen(false)
         }
     }
 
-    async function getUserChats(){
-        let usersChatted : UsersChatted | any = await fetch(`${apiUrl}/chat/getuserchats/${user.loggedUser.id}`)
-        usersChatted = await usersChatted.json()
-        setChats(usersChatted)
-        
-    }
-
     return(
         <div>
-            <button className="mt-4 btn btn-warning rounded-pill" onClick={openModal}>Create new chat +</button>
+            <button className="mt-4 btn btn-success me-3" onClick={openModal}>+ Create new chat </button>
             <Modal
                 style={{
                     content: {
