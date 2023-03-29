@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { useRouter } from "next/router"
 import { apiUrl } from "@/utils/apiUrl"
 import { useAuth } from "@/context/AuthContext"
