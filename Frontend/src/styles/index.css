@@ -19,3 +19,15 @@ body{
 .messages-box{
     height: 55vh;
 }
+
+.msg-sent-border{
+    border-radius: 10px 0 10px 10px;
+}
+
+.msg-received-border{
+    border-radius: 0 10px 10px 10px;
+}
+
+.max-w{
+    max-width: 50%;
+}
